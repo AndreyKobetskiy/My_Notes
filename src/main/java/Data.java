@@ -1,4 +1,4 @@
-import com.alibaba.fastjson.*;
+import com.alibaba.fastjson.JSON;
 import javax.swing.JRadioButton;
 import java.io.File;
 import java.io.FileWriter;
