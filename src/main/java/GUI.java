@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalDateTime;
@@ -23,23 +21,14 @@ public class GUI {
         this.data = data;
         mainFrame.addWindowListener(getWindowAdapter(data));
         mainFrame.getContentPane().add(BorderLayout.CENTER, assembleCenterPanel());
-        mainFrame.getContentPane().add(BorderLayout.WEST, makeSidePanel());
+        mainFrame.getContentPane().add(BorderLayout.WEST, assembleSidePanel());
         mainFrame.setVisible(true);
-    }
-
-
-
-    private JPanel assembleCenterPanel() {
-        JPanel namePanel = getNamePanel();
-        JPanel DatePanel = getDatePanel();
-        JPanel centerPanel = getCenterPanel(namePanel, DatePanel);
-        return centerPanel;
     }
 
     private WindowAdapter getWindowAdapter(Data data) {
         return new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                System.out.println(lastNote);
+                //System.out.println(lastNote);
                 if (lastNote != null) {
                     lastNote.setContent(textArea.getText());
                     lastNote.setName(nameField.getText());
@@ -50,16 +39,38 @@ public class GUI {
         };
     }
 
-    private JPanel getCenterPanel(JPanel namePanel, JPanel DatePanel) {
+    private JPanel assembleCenterPanel() {
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BorderLayout());
-        centerPanel.add(BorderLayout.NORTH, namePanel);
-        centerPanel.add(BorderLayout.CENTER, makeScrollPane());
-        centerPanel.add(BorderLayout.SOUTH, DatePanel);
+        centerPanel.add(BorderLayout.NORTH, assembleNamePanel());
+        centerPanel.add(BorderLayout.CENTER, assembleScrollPane());
+        centerPanel.add(BorderLayout.SOUTH, assembleDatePanel());
         return centerPanel;
     }
 
-    private JPanel getDatePanel() {
+    private JPanel assembleNamePanel() {
+        JPanel namePanel = new JPanel();
+        namePanel.setLayout(new FlowLayout());
+        namePanel.add(new JLabel("Note name:"));
+        nameField.setPreferredSize(new Dimension(200, 20));
+        namePanel.add(nameField);
+        return namePanel;
+    }
+
+    private JScrollPane assembleScrollPane() {
+        textArea.setFont(new Font("Serif", Font.ITALIC, 16));
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        JScrollPane areaScrollPane = new JScrollPane(textArea);
+        areaScrollPane.setVerticalScrollBarPolicy(
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        areaScrollPane.setPreferredSize(new Dimension(250, 250));
+        areaScrollPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        return areaScrollPane;
+    }
+
+
+    private JPanel assembleDatePanel() {
         JPanel DatePanel = new JPanel();
         DatePanel.setLayout(new FlowLayout());
         creationDate.setEditable(false);
@@ -69,72 +80,67 @@ public class GUI {
         return DatePanel;
     }
 
-    private JPanel getNamePanel() {
-        JPanel namePanel = new JPanel();
-        namePanel.setLayout(new FlowLayout());
-        namePanel.add(new JLabel("Note name:"));
-        nameField.setPreferredSize(new Dimension(200, 20));
-        namePanel.add(nameField);
-        return namePanel;
-    }
 
 
-    private JPanel makeSidePanel() {
+
+    private JPanel assembleSidePanel() {
         JPanel sidePanel = new JPanel();
         sidePanel.setLayout(new BorderLayout());
+        sidePanel.add(BorderLayout.NORTH, new JLabel("Notes"));
+        sidePanel.add(BorderLayout.CENTER, assembleSideScroll());
+        sidePanel.add(BorderLayout.SOUTH, assembleControlPanel());
+        return sidePanel;
+    }
 
+    private JPanel assembleControlPanel() {
+        JButton aNewBt = assembleANewButton();
+        JButton delBt = assembleDelButton();
+        JPanel controlPanel = new JPanel();
+        controlPanel.setLayout(new GridLayout(0, 1));
+        controlPanel.add(aNewBt);
+        controlPanel.add(delBt);
+        return controlPanel;
+    }
 
+    private JButton assembleDelButton() {
+        JButton delBt = new JButton("Delete");
+        delBt.addActionListener(e -> {
+            if (lastNote != null){
+                JRadioButton deletedButton = data.buttonHashMap.get(lastNote);
+                bg.remove(deletedButton);
+                sidePAnelCenter.remove(deletedButton);
+                data.notes.remove(lastNote);
+                data.buttonHashMap.remove(lastNote);
+                textArea.setText("");
+                nameField.setText("");
+                lastNote = null;
+            }
+            mainFrame.revalidate();
+            mainFrame.repaint();
+        });
+        return delBt;
+    }
+
+    private JButton assembleANewButton() {
+        JButton aNew = new JButton("New");
+        aNew.addActionListener(e -> {
+            Note addedNote = new Note();
+            addedNote.setCreation(LocalDateTime.now());
+            addedNote.setLastSeen(LocalDateTime.now());
+            addNewNoteButton(addedNote);
+            data.add(addedNote);
+            mainFrame.revalidate();
+            mainFrame.repaint();
+        });
+        return aNew;
+    }
+
+    private JScrollPane assembleSideScroll() {
         sidePAnelCenter.setLayout(new GridLayout(0, 1));
-        
-        
         for (Note note: data.notes) {
             addNewNoteButton(note);
         }
-        JScrollPane sideScroll = new JScrollPane(sidePAnelCenter);
-
-        JButton aNew = new JButton("New");
-        aNew.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Note addedNote = new Note();
-                addedNote.setCreation(LocalDateTime.now());
-                addedNote.setLastSeen(LocalDateTime.now());
-                addNewNoteButton(addedNote);
-                data.add(addedNote);
-                mainFrame.revalidate();
-                mainFrame.repaint();
-            }
-        });
-
-        JButton delBt = new JButton("Delete");
-        delBt.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (lastNote != null){
-                    JRadioButton deletedButton = data.buttonHashMap.get(lastNote);
-                    bg.remove(deletedButton);
-                    sidePAnelCenter.remove(deletedButton);
-                    data.notes.remove(lastNote);
-                    data.buttonHashMap.remove(lastNote);
-                    textArea.setText("");
-                    lastNote = null;
-                }
-                mainFrame.revalidate();
-                mainFrame.repaint();
-            }
-        });
-
-        JPanel controlPanel = new JPanel();
-        controlPanel.setLayout(new GridLayout(0, 1));
-        controlPanel.add(aNew);
-        controlPanel.add(delBt);
-
-        JLabel sidePanelLabel = new JLabel("Notes");
-
-        sidePanel.add(sidePanelLabel, BorderLayout.NORTH);
-        sidePanel.add(sideScroll, BorderLayout.CENTER);
-        sidePanel.add(controlPanel, BorderLayout.SOUTH);
-        return sidePanel;
+        return new JScrollPane(sidePAnelCenter);
     }
 
     private void addNewNoteButton(Note note) {
@@ -161,17 +167,6 @@ public class GUI {
         });
     }
 
-    private JScrollPane makeScrollPane() {
-        textArea.setFont(new Font("Serif", Font.ITALIC, 16));
-        textArea.setLineWrap(true);
-        textArea.setWrapStyleWord(true);
-        JScrollPane areaScrollPane = new JScrollPane(textArea);
-        areaScrollPane.setVerticalScrollBarPolicy(
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        areaScrollPane.setPreferredSize(new Dimension(250, 250));
 
-        areaScrollPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        return areaScrollPane;
-    }
 
 }

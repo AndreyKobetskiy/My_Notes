@@ -12,7 +12,6 @@ import java.util.List;
 public class Data {
     public HashMap<Note, JRadioButton> buttonHashMap = new HashMap<>();
     public List<Note> notes = new ArrayList<>();
-    public List<Note> addedNotes = new ArrayList<>();
     public void read(){
         File file = new File("save.json");
         try {
