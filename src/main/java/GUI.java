@@ -6,16 +6,16 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class GUI {
-    final DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-    JFrame mainFrame = new MainFrame();
-    Data data;
-    JTextArea textArea = new JTextArea();
-    Note lastNote = null;
-    ButtonGroup bg = new ButtonGroup();
-    JPanel sidePAnelCenter = new JPanel();
-    JTextField nameField = new JTextField();
-    JTextField creationDate = new JTextField();
-    JTextField lastSeenDate = new JTextField();
+    private final DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    private final JFrame mainFrame = new MainFrame();
+    private final Data data;
+    private final JTextArea textArea = new JTextArea();
+    private Note lastNote = null;
+    private final ButtonGroup bg = new ButtonGroup();
+    private final JPanel sidePAnelCenter = new JPanel();
+    private final JTextField nameField = new JTextField();
+    private final JTextField creationDate = new JTextField();
+    private final JTextField lastSeenDate = new JTextField();
 
     public GUI(Data data) {
         this.data = data;
