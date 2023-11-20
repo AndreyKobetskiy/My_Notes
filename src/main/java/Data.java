@@ -1,6 +1,5 @@
 import com.alibaba.fastjson.*;
-
-import javax.swing.*;
+import javax.swing.JRadioButton;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,13 +9,18 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Data {
-    public HashMap<Note, JRadioButton> buttonHashMap = new HashMap<>();
-    public List<Note> notes = new ArrayList<>();
-    public void read(){
-        File file = new File("save.json");
+    private final HashMap<Note, JRadioButton> buttonHashMap = new HashMap<>();
+
+    private final List<Note> notes = new ArrayList<>();
+
+    public Data() {
+
         try {
-            String content = new String(Files.readAllBytes(file.toPath()));
-            notes = JSON.parseArray(content, Note.class);
+            File file = new File("save.json");
+            if (file.isFile()){
+                String content = new String(Files.readAllBytes(file.toPath()));
+                notes.addAll(JSON.parseArray(content, Note.class));
+            }
         }
         catch (IOException e) {
             System.out.println("An error occurred.");
@@ -30,14 +34,30 @@ public class Data {
             FileWriter myWriter = new FileWriter(file);
             myWriter.write(JSON.toJSONString(notes));
             myWriter.close();
-            System.out.println("Successfully wrote to the file.");
         }
         catch (IOException e) {
                 System.out.println("An error occurred.");
                 e.printStackTrace();
         }
     }
+
+    public List<Note> getNotes() {
+        return notes;
+    }
+
     public void add(Note note){
         notes.add(note);
+    }
+
+    public void addButton(Note note, JRadioButton bt){
+        buttonHashMap.put(note, bt);
+    }
+
+    public JRadioButton getButton(Note note){
+        return buttonHashMap.get(note);
+    }
+    public void remove(Note note){
+        buttonHashMap.remove(note);
+        notes.remove(note);
     }
 }

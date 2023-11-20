@@ -106,11 +106,10 @@ public class GUI {
         JButton delBt = new JButton("Delete");
         delBt.addActionListener(e -> {
             if (lastNote != null){
-                JRadioButton deletedButton = data.buttonHashMap.get(lastNote);
+                JRadioButton deletedButton = data.getButton(lastNote);
                 bg.remove(deletedButton);
                 sidePAnelCenter.remove(deletedButton);
-                data.notes.remove(lastNote);
-                data.buttonHashMap.remove(lastNote);
+                data.remove(lastNote);
                 textArea.setText("");
                 nameField.setText("");
                 lastNote = null;
@@ -127,8 +126,8 @@ public class GUI {
             Note addedNote = new Note();
             addedNote.setCreation(LocalDateTime.now());
             addedNote.setLastSeen(LocalDateTime.now());
-            addNewNoteButton(addedNote);
             data.add(addedNote);
+            addNewNoteButton(addedNote);
             mainFrame.revalidate();
             mainFrame.repaint();
         });
@@ -137,7 +136,7 @@ public class GUI {
 
     private JScrollPane assembleSideScroll() {
         sidePAnelCenter.setLayout(new GridLayout(0, 1));
-        for (Note note: data.notes) {
+        for (Note note: data.getNotes()) {
             addNewNoteButton(note);
         }
         return new JScrollPane(sidePAnelCenter);
@@ -145,14 +144,14 @@ public class GUI {
 
     private void addNewNoteButton(Note note) {
         JRadioButton jrb = new JRadioButton(note.getName());
-        data.buttonHashMap.put(note, jrb);
+        data.addButton(note, jrb);
         bg.add(jrb);
         sidePAnelCenter.add(jrb);
         jrb.addActionListener(e -> {
             if (lastNote != null){
                 lastNote.setContent(textArea.getText());
                 lastNote.setName(nameField.getText());
-                data.buttonHashMap.get(lastNote).setText(lastNote.getName());
+                data.getButton(lastNote).setText(lastNote.getName());
                 mainFrame.revalidate();
                 mainFrame.repaint();
             }

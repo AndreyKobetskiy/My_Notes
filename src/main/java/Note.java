@@ -1,5 +1,3 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 
 public class Note {
@@ -25,9 +23,6 @@ public class Note {
     public void setLastSeen(LocalDateTime lastSeen) {
         this.lastSeen = lastSeen;
     }
-
-
-
     public String getContent() {
         return content;
     }
@@ -43,7 +38,4 @@ public class Note {
     public void setName(String name) {
         this.name = name;
     }
-
-
-
 }
