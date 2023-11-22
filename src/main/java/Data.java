@@ -1,7 +1,5 @@
 import com.alibaba.fastjson.JSON;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import javax.swing.JRadioButton;
 import java.io.File;
 import java.io.FileWriter;
@@ -12,18 +10,20 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Data {
-    private final Logger dataLogger = LogManager.getLogger("Data logger");
+    private final Logger dataLogger;
     private final HashMap<Note, JRadioButton> buttonHashMap = new HashMap<>();
 
     private final List<Note> notes = new ArrayList<>();
 
     //tries to reed notes from save.json
-    public Data() {
+    public Data(Logger logger) {
+        this.dataLogger = logger;
         try {
             File file = new File("save.json");
             if (file.isFile()){
                 String content = new String(Files.readAllBytes(file.toPath()));
                 notes.addAll(JSON.parseArray(content, Note.class));
+                dataLogger.info("Notes from save.json imported");
             }else dataLogger.warn("No save.json file found");
         }
         catch (IOException e) {
