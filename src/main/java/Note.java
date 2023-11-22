@@ -1,6 +1,9 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.time.LocalDateTime;
 
 public class Note {
+    private static final Logger logger = LogManager.getLogger("Note logger ");
     private String content;
     private String name;
     private LocalDateTime creation;
@@ -13,6 +16,7 @@ public class Note {
 
     public void setCreation(LocalDateTime creation) {
         this.creation = creation;
+        logger.debug("Creation date set for " + this);
     }
 
     public LocalDateTime getLastSeen() {
@@ -22,6 +26,7 @@ public class Note {
 
     public void setLastSeen(LocalDateTime lastSeen) {
         this.lastSeen = lastSeen;
+        logger.debug("Last seen date set for " + this);
     }
     public String getContent() {
         return content;
@@ -29,6 +34,7 @@ public class Note {
 
     public void setContent(String content) {
         this.content = content;
+        logger.debug("Content set for " + this);
     }
 
     public String getName() {
@@ -37,5 +43,6 @@ public class Note {
 
     public void setName(String name) {
         this.name = name;
+        logger.debug("Name set for " + this);
     }
 }

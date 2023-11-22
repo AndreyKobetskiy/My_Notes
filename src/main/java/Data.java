@@ -1,4 +1,5 @@
 import com.alibaba.fastjson.JSON;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javax.swing.JRadioButton;
 import java.io.File;
@@ -10,14 +11,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Data {
-    private final Logger dataLogger;
+    private static final Logger dataLogger = LogManager.getLogger("Data logger ");
     private final HashMap<Note, JRadioButton> buttonHashMap = new HashMap<>();
 
     private final List<Note> notes = new ArrayList<>();
 
     //tries to reed notes from save.json
-    public Data(Logger logger) {
-        this.dataLogger = logger;
+    public Data() {
         try {
             File file = new File("save.json");
             if (file.isFile()){

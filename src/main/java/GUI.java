@@ -1,3 +1,4 @@
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
@@ -7,7 +8,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class GUI {
-    private final Logger GUI_LOGGER;
+    private static final Logger guiButtonLogger = LogManager.getLogger("Button logger ");
+    private static final Logger guiAsemblyLogger = LogManager.getLogger("GUI assembly logger ");
     private final DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
     private final JFrame mainFrame = new MainFrame();
     private final Data data;
@@ -20,14 +22,13 @@ public class GUI {
     private final JTextField lastSeenDate = new JTextField();
 
     //init main frame
-    public GUI(Data data, Logger logger) {
-        this.GUI_LOGGER = logger;
+    public GUI(Data data) {
         this.data = data;
         mainFrame.addWindowListener(getWindowAdapter(data));
         mainFrame.getContentPane().add(BorderLayout.CENTER, assembleCenterPanel());
         mainFrame.getContentPane().add(BorderLayout.WEST, assembleSidePanel());
         mainFrame.setVisible(true);
-        GUI_LOGGER.info("Gui creation ended successfully");
+        guiAsemblyLogger.info("Gui creation ended successfully");
     }
 
     //declares on window closing action
@@ -35,7 +36,7 @@ public class GUI {
     private WindowAdapter getWindowAdapter(Data data) {
         return new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                GUI_LOGGER.info("Window closing");
+                guiAsemblyLogger.info("Window closing");
                 if (lastNote != null) {
                     lastNote.setContent(textArea.getText());
                     lastNote.setName(nameField.getText());
@@ -56,7 +57,7 @@ public class GUI {
         centerPanel.add(BorderLayout.NORTH, assembleNamePanel());
         centerPanel.add(BorderLayout.CENTER, assembleScrollPane());
         centerPanel.add(BorderLayout.SOUTH, assembleDatePanel());
-        GUI_LOGGER.info("Center panel assembled successfully");
+        guiAsemblyLogger.info("Center panel assembled successfully");
         return centerPanel;
     }
 
@@ -106,7 +107,7 @@ public class GUI {
         sidePanel.add(BorderLayout.NORTH, new JLabel("Notes"));
         sidePanel.add(BorderLayout.CENTER, assembleSideScroll());
         sidePanel.add(BorderLayout.SOUTH, assembleControlPanel());
-        GUI_LOGGER.info("Side panel assembled successfully");
+        guiAsemblyLogger.info("Side panel assembled successfully");
         return sidePanel;
     }
 
@@ -129,7 +130,7 @@ public class GUI {
     private JButton assembleDelButton() {
         JButton delBt = new JButton("Delete");
         delBt.addActionListener(e -> {
-            GUI_LOGGER.info("Del Button pressed");
+            guiButtonLogger.info("Del Button pressed");
             if (lastNote != null){
                 JRadioButton deletedButton = data.getButton(lastNote);
                 bg.remove(deletedButton);
@@ -141,7 +142,7 @@ public class GUI {
             }
             mainFrame.revalidate();
             mainFrame.repaint();
-            GUI_LOGGER.info("Del Button processed successfully");
+            guiButtonLogger.info("Del Button processed successfully");
         });
         return delBt;
     }
@@ -153,7 +154,7 @@ public class GUI {
     private JButton assembleANewButton() {
         JButton aNew = new JButton("New");
         aNew.addActionListener(e -> {
-            GUI_LOGGER.info("New Button pressed");
+            guiButtonLogger.info("New Button pressed");
             Note addedNote = new Note();
             addedNote.setCreation(LocalDateTime.now());
             addedNote.setLastSeen(LocalDateTime.now());
@@ -161,7 +162,7 @@ public class GUI {
             addNewNoteButton(addedNote);
             mainFrame.revalidate();
             mainFrame.repaint();
-            GUI_LOGGER.info("New Button processed successfully");
+            guiButtonLogger.info("New Button processed successfully");
         });
         return aNew;
     }
@@ -186,7 +187,7 @@ public class GUI {
         bg.add(jrb);
         sidePAnelCenter.add(jrb);
         jrb.addActionListener(e -> {
-            GUI_LOGGER.info("Note Button pressed");
+            guiButtonLogger.info("Note Button pressed");
 
             //saving of previous redacted note
             if (lastNote != null){
@@ -209,8 +210,9 @@ public class GUI {
 
             mainFrame.revalidate();
             mainFrame.repaint();
-            GUI_LOGGER.info("Note Button processed successfully");
+            guiButtonLogger.info("Note Button processed successfully");
         });
-        GUI_LOGGER.debug( "to side panel added " + jrb);
+        guiAsemblyLogger.debug( "to side panel added " + jrb);
+
     }
 }
