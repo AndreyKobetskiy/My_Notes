@@ -138,6 +138,8 @@ public class GUI {
                 data.remove(lastNote);
                 textArea.setText("");
                 nameField.setText("");
+                creationDate.setText("");
+                lastSeenDate.setText("");
                 lastNote = null;
             }
             mainFrame.revalidate();
