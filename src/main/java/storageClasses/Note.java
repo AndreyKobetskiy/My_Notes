@@ -1,9 +1,11 @@
+package storageClasses;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.time.LocalDateTime;
 
 public class Note {
-    private static final Logger logger = LogManager.getLogger("Note logger ");
+    private static final Logger logger = LogManager.getLogger("StorageClasses.Note logger ");
     private String content;
     private String name;
     private LocalDateTime creation;
