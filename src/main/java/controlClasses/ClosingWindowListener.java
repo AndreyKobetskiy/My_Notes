@@ -12,7 +12,7 @@ public class ClosingWindowListener extends WindowAdapter {
     public ClosingWindowListener(GUI gui, Data data){
         this.data = data;
         this.gui = gui;
-    };
+    }
     @Override
     public void windowClosing(WindowEvent e) {
         ButtonLogger.log.info("App closing");
