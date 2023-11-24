@@ -3,10 +3,11 @@ package controlClasses;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
-
 import gui.GUI;
 import storageClasses.Data;
 import storageClasses.Note;
+
+//contains logic for "NEW" button on control panel
 
 public class ANewButtonActionListener implements ActionListener{
     private final GUI gui;

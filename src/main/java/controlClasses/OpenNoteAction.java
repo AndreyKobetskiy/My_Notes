@@ -3,9 +3,10 @@ package controlClasses;
 import gui.GUI;
 import storageClasses.Data;
 import storageClasses.Note;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+//contains logic for "Note" buttons in scroll part of side panel
 
 public class OpenNoteAction implements ActionListener {
     private final GUI gui;

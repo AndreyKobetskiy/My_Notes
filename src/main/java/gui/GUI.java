@@ -2,7 +2,7 @@ package gui;
 
 import controlClasses.ANewButtonActionListener;
 import controlClasses.ClosingWindowListener;
-import controlClasses.DelButtonActionLIstner;
+import controlClasses.DelButtonActionListener;
 import controlClasses.OpenNoteAction;
 import storageClasses.Data;
 import storageClasses.Note;
@@ -48,7 +48,7 @@ public class GUI {
         return centerPanel;
     }
 
-    //init panel that contains data information
+    //init panel that contains note name
     private JPanel assembleNamePanel() {
         JPanel namePanel = new JPanel();
         namePanel.setLayout(new FlowLayout());
@@ -110,24 +110,14 @@ public class GUI {
         return controlPanel;
     }
 
-    public Note getLastNote() {
-        return lastNote;
-    }
-
     //init Del button for removal of a note
-    //contains Del logic:
-    //calls for removal to StorageClasses.Data & Gui components
-    //frame revalidation & repainting
     private JButton assembleDelButton(Data data) {
         JButton delBt = new JButton("Delete");
-        delBt.addActionListener(new DelButtonActionLIstner(this, data));
+        delBt.addActionListener(new DelButtonActionListener(this, data));
         return delBt;
     }
 
     //init New button for creation of a note
-    //contains New logic:
-    //  calls for addition to StorageClasses.Data & Gui components
-    //  frame revalidation & repainting
     private JButton assembleANewButton(Data data) {
         JButton aNew = new JButton("New");
         aNew.addActionListener(new ANewButtonActionListener(this, data));
@@ -143,15 +133,9 @@ public class GUI {
         return new JScrollPane(sidePAnelCenter);
     }
 
-    public void setLastNote(Note lastNote) {
-        this.lastNote = lastNote;
-    }
+
 
     //init a button for an active note
-    //contains logic for it
-    //  saving of previous redacted note
-    //  displaying of chosen note & setting of its lastSeen Date
-    //  frame revalidation & repainting
     public JRadioButton createNewNoteButton(Note note, Data data) {
         JRadioButton jrb = new JRadioButton(note.getName());
         addSidePanelButton(jrb);
@@ -159,6 +143,8 @@ public class GUI {
         guiAsemblyLogger.debug( "to side panel added " + jrb);
         return jrb;
     }
+
+    //frame update
     public void redraw(){
         mainFrame.revalidate();
         mainFrame.repaint();
@@ -194,6 +180,12 @@ public class GUI {
     }
     public String getNameFieldContent(){
         return nameField.getText();
+    }
+    public Note getLastNote() {
+        return lastNote;
+    }
+    public void setLastNote(Note lastNote) {
+        this.lastNote = lastNote;
     }
 
 }

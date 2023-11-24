@@ -3,15 +3,16 @@ package controlClasses;
 import gui.GUI;
 import storageClasses.Data;
 import storageClasses.Note;
-
-import javax.swing.*;
+import javax.swing.JRadioButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class DelButtonActionLIstner implements ActionListener {
+//contains logic for "Delete" button on control panel
+
+public class DelButtonActionListener implements ActionListener {
     private final GUI gui;
     private final Data data;
-    public DelButtonActionLIstner(GUI gui, Data data){
+    public DelButtonActionListener(GUI gui, Data data){
         this.gui = gui;
         this.data = data;
     }

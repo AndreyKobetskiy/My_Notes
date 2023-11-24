@@ -6,6 +6,8 @@ import storageClasses.Note;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+//"on close" logic
+
 public class ClosingWindowListener extends WindowAdapter {
     private final GUI gui;
     private final Data data;
